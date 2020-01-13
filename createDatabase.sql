@@ -46,55 +46,47 @@ CREATE TABLE `academia`.`area` (
   PRIMARY KEY (`id`));
 
 
-  CREATE TABLE `academia`.`course` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `title` VARCHAR(25) NOT NULL,
-  `decription` VARCHAR(100) NOT NULL,
-  `syllabus` VARCHAR(120) NULL,
-  `area_id` INT NOT NULL,
-  `numHours` INT NOT NULL,
-  `level` TINYINT NULL,
-  `cost` DECIMAL(13,2) NOT NULL,
+ CREATE TABLE `course` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` varchar(25) NOT NULL,
+  `decription` varchar(100) NOT NULL,
+  `syllabus` varchar(120) DEFAULT NULL,
+  `area_id` int(11) NOT NULL,
+  `numHours` int(11) NOT NULL,
+  `level` tinyint(4) DEFAULT NULL,
+  `cost` decimal(13,2) NOT NULL,
+  `project_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `course_area_idx` (`area_id` ASC) VISIBLE,
-  CONSTRAINT `course_area`
-    FOREIGN KEY (`area_id`)
-    REFERENCES `academia`.`area` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE);
+  KEY `course_area_idx` (`area_id`),
+  KEY `course_project_idx` (`project_id`),
+  CONSTRAINT `course_area` FOREIGN KEY (`area_id`) REFERENCES `area` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `course_project` FOREIGN KEY (`project_id`) REFERENCES `project` (`id`)
+ );
 
 
-CREATE TABLE `academia`.`course_edition` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `start` DATE NOT NULL,
-  `end` DATE NOT NULL,
-  `cost` DECIMAL(13,2) NOT NULL,
-  `isExternal` TINYINT NOT NULL,
-  `address` VARCHAR(45) NULL,
-  `city` VARCHAR(45) NULL,
-  `zip` VARCHAR(45) NULL,
-  `lead_teacher_id` INT NULL,
-  `manager_id` INT NOT NULL,
-  `main_classroom_id` INT NULL,
+CREATE TABLE `course_edition` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `start` date NOT NULL,
+  `end` date NOT NULL,
+  `cost` decimal(13,2) NOT NULL,
+  `isExternal` tinyint(4) NOT NULL,
+  `address` varchar(45) DEFAULT NULL,
+  `city` varchar(45) DEFAULT NULL,
+  `zip` varchar(45) DEFAULT NULL,
+  `lead_teacher_id` int(11) DEFAULT NULL,
+  `manager_id` int(11) NOT NULL,
+  `main_classroom_id` int(11) DEFAULT NULL,
+  `course_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `course_edition_agent_idx` (`lead_teacher_id` ASC) VISIBLE,
-  INDEX `course_edition_agent_ manager_idx` (`manager_id` ASC) VISIBLE,
-  INDEX `course_edition_classroom_idx` (`main_classroom_id` ASC) VISIBLE,
-  CONSTRAINT `course_edition_agent_teacher`
-    FOREIGN KEY (`lead_teacher_id`)
-    REFERENCES `academia`.`agent` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE,
-  CONSTRAINT `course_edition_agent_ manager`
-    FOREIGN KEY (`manager_id`)
-    REFERENCES `academia`.`agent` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `course_edition_classroom`
-    FOREIGN KEY (`main_classroom_id`)
-    REFERENCES `academia`.`classroom` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION);
+  KEY `course_edition_agent_idx` (`lead_teacher_id`),
+  KEY `course_edition_agent_ manager_idx` (`manager_id`),
+  KEY `course_edition_classroom_idx` (`main_classroom_id`),
+  KEY `course_edition_course_idx` (`course_id`),
+  CONSTRAINT `course_edition_agent_ manager` FOREIGN KEY (`manager_id`) REFERENCES `agent` (`id`),
+  CONSTRAINT `course_edition_agent_teacher` FOREIGN KEY (`lead_teacher_id`) REFERENCES `agent` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `course_edition_classroom` FOREIGN KEY (`main_classroom_id`) REFERENCES `classroom` (`id`),
+  CONSTRAINT `course_edition_course` FOREIGN KEY (`course_id`) REFERENCES `course` (`id`)
+);
 
 
  CREATE TABLE `academia`.`client` (
@@ -189,7 +181,8 @@ CREATE TABLE `academia`.`lesson` (
     FOREIGN KEY (`course_edition_id`)
     REFERENCES `academia`.`course_edition` (`id`)
     ON DELETE RESTRICT
-    ON UPDATE CASCADE;
+    ON UPDATE CASCADE
+    );
 
 CREATE TABLE `academia`.`skill` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
@@ -242,16 +235,16 @@ CREATE TABLE `academia`.`competence` (
     ON DELETE RESTRICT
     ON UPDATE CASCADE);
 
-CREATE TABLE `academia`.`student_feedback` (
-  `id` INT NOT NULL AUTO_INCREMENT,
-  `teaching_assignment_id` INT NULL,
-  `vote` TINYINT NOT NULL DEFAULT 10,
-  `feedback` VARCHAR(45) NULL,
+CREATE TABLE `student_feedback` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `teaching_assignment_id` int(11) DEFAULT NULL,
+  `vote` tinyint(4) NOT NULL DEFAULT '10',
+  `feedback` varchar(45) DEFAULT NULL,
+  `student_id` int(11) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `student_feedback_teaching_assignment_idx` (`teaching_assignment_id` ASC) VISIBLE,
-  CONSTRAINT `student_feedback_teaching_assignment`
-    FOREIGN KEY (`teaching_assignment_id`)
-    REFERENCES `academia`.`teaching_assignment` (`id`)
-    ON DELETE RESTRICT
-    ON UPDATE CASCADE);
+  KEY `student_feedback_teaching_assignment_idx` (`teaching_assignment_id`),
+  KEY `studente_feedback_student_idx` (`student_id`),
+  CONSTRAINT `student_feedback_teaching_assignment` FOREIGN KEY (`teaching_assignment_id`) REFERENCES `teaching_assignment` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
+  CONSTRAINT `studente_feedback_student` FOREIGN KEY (`student_id`) REFERENCES `student` (`id`)
+);
 
