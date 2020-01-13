@@ -1,0 +1,24 @@
+1) Spiegate le prime tre regole di normalizzazione
+
+2) Cosa sono primary e foreign keys e quale e' il loro scopo?
+
+3) Cosa e' un full outer join? Fornite una spiegazione ed un esempio
+
+4) Quali sono vantaggi e svantaggi di usare NULL in una tabella?
+
+5) Cosa sono le window functions? Fate anche un esempio
+
+Formulate queries per rispondere, sul database di esempio, alle seguenti domande:
+
+a) Quanti dei nostri impiegati sono nati dopo il 20 giugno 1970?
+b) Quanti dei nostri impiegati hanno piu' di 30 anni ma meno di 40?
+c) Produrre la lista di corsi in area informatica e comprendono la stringa "ja" nel titolo
+d) Produrre la lista delle edizioni corso in area informatica durante l' anno 2019
+e) Produrre nome e cognome dei possibili docenti per un corso che richiede una skill con nome C# a livello 3
+f) Produrre nome e cognome di tutti gli studenti che hanno frequentato il l' edizione corso con id 2
+g) Quanti studenti hanno passato l' edizione corso con id 2?
+h) Produrre tutte le lezioni associate all' edizione corso con id 2
+i) Produrre tutte le lezioni associate a tutti le edizioni corso del progetto con id 1
+l) PRodurre nome e cognome di tutti gli studenti che non hanno ancora frequentato nessun corso
+m) Chi e' il miglior insegnante della mia scuola?
+
